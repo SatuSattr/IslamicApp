@@ -115,11 +115,11 @@ function TabLayoutContent() {
         }}
       />
       <Tabs.Screen
-        name="pengaturan"
+        name="hadist"
         options={{
-          title: 'Pengaturan',
+          title: 'Hadits',
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="settings" size={24} color={color} />
+            <MaterialIcons name="library-books" size={24} color={color} />
           ),
         }}
       />

@@ -2,6 +2,7 @@ import { useScrollDirection } from '@/contexts/scroll-context';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Image } from 'expo-image';
 import * as Location from 'expo-location';
+import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -41,7 +42,7 @@ const MENU_ITEMS = [
   { icon: 'menu-book' as const, label: 'Al-Quran', iconColor: '#4a7a4d', circleBg: '#dff0df' },
   { icon: 'forum' as const, label: 'Doa Harian', iconColor: '#d4872e', circleBg: '#fdf0e0' },
   { icon: 'favorite-border' as const, label: 'Dzikir Duha', iconColor: '#6F8F72', circleBg: '#e6f0e7' },
-  { icon: 'library-books' as const, label: 'Hadits', iconColor: '#8b7355', circleBg: '#f5efe6' },
+  { icon: 'settings' as const, label: 'Pengaturan', iconColor: '#8b7355', circleBg: '#f5efe6' },
   { icon: 'explore' as const, label: 'Arah Kiblat', iconColor: '#5a8a9e', circleBg: '#dff0f5' },
   { icon: 'volunteer-activism' as const, label: 'Donasi', iconColor: '#F2A65A', circleBg: '#fef4e8' },
   { icon: 'auto-stories' as const, label: 'Asmaul Husna', iconColor: '#7a6f8f', circleBg: '#edeaf3' },
@@ -166,6 +167,7 @@ function useTime() {
 }
 
 export default function HomeScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const currentTime = useTime();
@@ -301,7 +303,15 @@ export default function HomeScreen() {
       {/* ===== MENU GRID ===== */}
       <View style={styles.menuGrid}>
         {MENU_ITEMS.map((item) => (
-          <Pressable key={item.label} style={styles.menuItem}>
+          <Pressable
+            key={item.label}
+            style={styles.menuItem}
+            onPress={() => {
+              if (item.label === 'Pengaturan') router.push('/pengaturan');
+              if (item.label === 'Asmaul Husna') router.push('/asmaul-husna');
+              // More routes can be added here
+            }}
+          >
             <View style={[styles.menuIconCircle, { backgroundColor: item.circleBg }]}>
               <MaterialIcons name={item.icon} size={26} color={item.iconColor} />
             </View>

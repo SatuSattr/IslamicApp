@@ -1,4 +1,5 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -20,20 +21,26 @@ export default function RootLayout() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [splashAnimationFinished, setSplashAnimationFinished] = useState(false);
 
+  const [fontsLoaded] = useFonts({
+    'NotoNaskhArabic': require('@/assets/tarteel/font/NotoNaskhArabic-VariableFont_wght.ttf'),
+  });
+
   useEffect(() => {
     async function prepare() {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        // Prepare resources
       } catch (e) {
         console.warn(e);
       } finally {
-        setAppIsReady(true);
-        await SplashScreen.hideAsync();
+        if (fontsLoaded) {
+          setAppIsReady(true);
+          await SplashScreen.hideAsync();
+        }
       }
     }
 
     prepare();
-  }, []);
+  }, [fontsLoaded]);
 
   if (!appIsReady || !splashAnimationFinished) {
     return (
@@ -47,6 +54,9 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="hadith-detail" options={{ headerShown: false }} />
+        <Stack.Screen name="asmaul-husna" options={{ headerShown: false }} />
+        <Stack.Screen name="pengaturan" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
       <StatusBar style="auto" />
