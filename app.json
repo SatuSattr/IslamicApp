@@ -1,19 +1,17 @@
 {
   "expo": {
-    "name": "Tarteel",
-    "slug": "Tarteel",
+    "name": "IslamicApp",
+    "slug": "IslamicApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "tarteel",
+    "scheme": "IslamicApp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": [
-          "audio"
-        ]
+        "UIBackgroundModes": ["audio"]
       }
     },
     "android": {
