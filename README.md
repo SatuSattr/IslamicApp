@@ -63,5 +63,5 @@ A comprehensive and modern Islamic companion app built with React Native and Exp
 
 ---
 
-> 🕒 **Waktu Pengerjaan:** 34 Jam  
+> 🕒 **Waktu Pengerjaan:** 19 Jam  
 > 🏆 **Nilai** : N/A
