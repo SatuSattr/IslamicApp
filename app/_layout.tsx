@@ -3,11 +3,13 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import { setAudioModeAsync } from "expo-audio";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import "react-native-reanimated";
 
 import { CustomSplashScreen } from "@/components/custom-splash-screen";
@@ -34,6 +36,13 @@ export default function RootLayout() {
     async function prepare() {
       try {
         // Prepare resources
+        await setAudioModeAsync({
+          playsInSilentMode: true,
+          shouldPlayInBackground: true,
+          interruptionMode:
+            Platform.OS === "ios" ? "mixWithOthers" : "doNotMix",
+          shouldRouteThroughEarpiece: false,
+        });
       } catch (e) {
         console.warn(e);
       } finally {

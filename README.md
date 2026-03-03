@@ -14,7 +14,7 @@ A comprehensive and modern Islamic companion app built with React Native and Exp
 
 ## ✨ Features
 
-- **📖 Al-Qur'an**: Read Surahs with detailed translations and tafsir.
+- **📖 Al-Qur'an**: Read Surahs with detailed translations and tafsir. Includes background audio support (works even when the screen is off).
 - **🙏 Doa Harian**: Daily prayers and supplications for various occasions.
 - **📿 Dzikir**: Digital Tasbeeh and dzikir collections.
 - **🕋 Arah Kiblat**: Find the Qibla direction from your location.

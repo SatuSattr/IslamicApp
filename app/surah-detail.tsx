@@ -1,5 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { setAudioModeAsync, useAudioPlayer } from "expo-audio";
+import { useAudioPlayer } from "expo-audio";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -151,22 +151,6 @@ export default function SurahDetailScreen() {
   const player = useAudioPlayer();
 
   useEffect(() => {
-    const configureAudio = async () => {
-      try {
-        await setAudioModeAsync({
-          playsInSilentMode: true,
-          shouldPlayInBackground: true,
-          interruptionMode: "mixWithOthers",
-          shouldRouteThroughEarpiece: false,
-        });
-      } catch (error) {
-        console.warn("Failed to configure audio mode:", error);
-      }
-    };
-    configureAudio();
-  }, []);
-
-  useEffect(() => {
     const subscription = player.addListener(
       "playbackStatusUpdate",
       (status) => {
@@ -192,7 +176,6 @@ export default function SurahDetailScreen() {
 
     return () => {
       subscription.remove();
-      player.pause();
     };
   }, [player]);
 
@@ -393,7 +376,17 @@ export default function SurahDetailScreen() {
       {/* Header */}
       <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <View style={styles.headerLeft}>
-          <Pressable onPress={() => router.back()} style={styles.backBtn}>
+          <Pressable
+            onPress={() => {
+              if (isPlaying) {
+                try {
+                  player.pause();
+                } catch (e) {}
+              }
+              router.back();
+            }}
+            style={styles.backBtn}
+          >
             <MaterialIcons name="arrow-back" size={24} color="#666" />
           </Pressable>
           <View>
