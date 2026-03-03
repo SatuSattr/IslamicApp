@@ -1,10 +1,11 @@
 import { useScrollDirection } from '@/contexts/scroll-context';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import {
     ActivityIndicator,
     FlatList,
-    ImageBackground,
+    Platform,
     Pressable,
     StyleSheet,
     Text,
@@ -12,60 +13,69 @@ import {
     View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Svg, { ClipPath, Defs, G, Path, Rect } from 'react-native-svg';
 
 // --- Types ---
 type Surah = {
     nomor: number;
     nama: string;
-    nama_latin: string;
-    jumlah_ayat: number;
-    tempat_turun: string;
+    namaLatin: string;
+    jumlahAyat: number;
+    tempatTurun: string;
     arti: string;
     deskripsi: string;
-    audio: string;
+    audioFull: { [key: string]: string };
 };
+
+const AyatIcon = ({ size = 36, color = "#6f8f72d8" }) => (
+    <Svg width={size} height={size} viewBox="0 0 36 36" fill="none">
+        <G clipPath="url(#clip0_1102_1047)">
+            <Path
+                d="M31.0781 12.6219V5.97656C31.0781 5.39409 30.6059 4.92188 30.0234 4.92188H23.3781L18.7442 0.307336C18.3326 -0.102445 17.6673 -0.102445 17.2557 0.307336L12.6219 4.92188H5.97656C5.39409 4.92188 4.92188 5.39409 4.92188 5.97656V12.6219L0.307336 17.2558C-0.102445 17.6674 -0.102445 18.3327 0.307336 18.7443L4.92188 23.3781V30.0234C4.92188 30.6059 5.39409 31.0781 5.97656 31.0781H12.6219L17.2557 35.6927C17.4615 35.8976 17.7308 36 18 36C18.2692 36 18.5385 35.8976 18.7442 35.6927L23.3781 31.0781H30.0234C30.6059 31.0781 31.0781 30.6059 31.0781 30.0234V23.3781L35.6927 18.7443C36.1024 18.3327 36.1024 17.6674 35.6927 17.2558L31.0781 12.6219ZM29.2761 22.1983C29.0793 22.396 28.9688 22.6635 28.9688 22.9425V28.9688H22.9425C22.6636 28.9688 22.396 29.0793 22.1984 29.2761L18 33.4569L13.8017 29.2761C13.604 29.0793 13.3365 28.9688 13.0575 28.9688H7.03125V22.9425C7.03125 22.6636 6.92072 22.396 6.72391 22.1984L2.54313 18L6.72391 13.8017C6.92072 13.604 7.03125 13.3365 7.03125 13.0575V7.03125H13.0575C13.3364 7.03125 13.604 6.92072 13.8016 6.72391L18 2.54313L22.1984 6.72391C22.3961 6.92072 22.6636 7.03125 22.9425 7.03125H28.9688V13.0575C28.9688 13.3364 29.0793 13.604 29.2761 13.8016L33.4569 18L29.2761 22.1983Z"
+                fill={color}
+            />
+        </G>
+        <Defs>
+            <ClipPath id="clip0_1102_1047">
+                <Rect width="36" height="36" fill="white" />
+            </ClipPath>
+        </Defs>
+    </Svg>
+);
 
 const stripHtml = (html: string) => {
     return html.replace(/<[^>]*>?/gm, '');
 };
 
 function SurahItem({ item }: { item: Surah }) {
-    const [expanded, setExpanded] = useState(false);
-    const cleanedDescription = useMemo(() => stripHtml(item.deskripsi), [item.deskripsi]);
-    const shortDescription = cleanedDescription.slice(0, 50) + (cleanedDescription.length > 50 ? '...' : '');
+    const router = useRouter();
 
     return (
         <View style={styles.surahItemContainer}>
-            <Pressable style={styles.surahItem} onPress={() => setExpanded(!expanded)}>
+            <Pressable
+                style={styles.surahItem}
+                onPress={() => router.push({ pathname: '/surah-detail', params: { nomor: item.nomor } })}
+            >
                 <View style={styles.leftContent}>
-                    <ImageBackground
-                        source={require('@/assets/tarteel/logo/ayat.png')}
-                        style={styles.numberContainer}
-                        resizeMode="contain"
-                    >
-                        <Text style={styles.surahNumber}>{item.nomor}</Text>
-                    </ImageBackground>
+                    <View style={styles.numberContainer}>
+                        <AyatIcon size={44} color="#6f8f72d8" />
+                        <View style={styles.numberTextWrapper}>
+                            <Text style={styles.surahNumber}>{item.nomor}</Text>
+                        </View>
+                    </View>
 
                     <View style={styles.textInfo}>
-                        <Text style={styles.surahNameLatin}>{item.nama_latin}</Text>
+                        <Text style={styles.surahNameLatin}>{item.namaLatin}</Text>
                         <Text style={styles.surahSubtitle}>
-                            {item.arti} • {item.jumlah_ayat} Ayat
+                            {item.arti} • {item.jumlahAyat} Ayat
                         </Text>
                     </View>
                 </View>
 
                 <View style={styles.rightContent}>
                     <Text style={styles.surahArabic}>{item.nama}</Text>
-                    <Text style={styles.placeText}>{item.tempat_turun} </Text>
+                    <Text style={styles.placeText}>{item.tempatTurun} </Text>
                 </View>
-            </Pressable>
-
-            <Pressable onPress={() => setExpanded(!expanded)} style={styles.descriptionContainer}>
-                <Text style={styles.descriptionText}>
-                    {expanded ? cleanedDescription : shortDescription}
-                    {expanded && <Text style={styles.readMoreText}> Sembunyikan</Text>}
-                    {!expanded && cleanedDescription.length > 50 && <Text style={styles.readMoreText}> Selengkapnya</Text>}
-                </Text>
             </Pressable>
         </View>
     );
@@ -83,9 +93,27 @@ export default function AlQuranScreen() {
     useEffect(() => {
         async function fetchSurahs() {
             try {
-                const response = await fetch('https://quran-api.santrikoding.com/api/surah');
-                const data = await response.json();
-                setSurahs(data);
+                const apiUrl = 'https://equran.id/api/v2/surat';
+                let finalUrl = apiUrl;
+
+                if (Platform.OS === 'web') {
+                    finalUrl = `https://all-origins-myslf.vercel.app/get?url=${encodeURIComponent(apiUrl)}&apikey=1232`;
+                }
+
+                const response = await fetch(finalUrl);
+                let data;
+
+                if (Platform.OS === 'web') {
+                    const wrapper = await response.json();
+                    const innerJson = typeof wrapper.contents === 'string' ? JSON.parse(wrapper.contents) : wrapper.contents;
+                    data = innerJson;
+                } else {
+                    data = await response.json();
+                }
+
+                if (data && data.code === 200) {
+                    setSurahs(data.data);
+                }
             } catch (error) {
                 console.error('Error fetching surahs:', error);
             } finally {
@@ -97,9 +125,9 @@ export default function AlQuranScreen() {
 
     const filteredSurahs = useMemo(() => {
         return surahs.filter(s => {
-            const matchesSearch = s.nama_latin.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            const matchesSearch = s.namaLatin.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 s.nomor.toString().includes(searchQuery);
-            const matchesFilter = filter === 'all' || s.tempat_turun.toLowerCase() === filter;
+            const matchesFilter = filter === 'all' || s.tempatTurun.toLowerCase() === filter;
             return matchesSearch && matchesFilter;
         });
     }, [surahs, searchQuery, filter]);
@@ -251,19 +279,27 @@ const styles = StyleSheet.create({
     leftContent: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 3,
+        gap: 12,
     },
     numberContainer: {
-        width: 70,
-        height: 70,
+        width: 50,
+        height: 50,
         justifyContent: 'center',
         alignItems: 'center',
     },
     surahNumber: {
-        fontSize: 20,
+        fontSize: 14,
         fontWeight: '700',
         color: '#1a1a1a',
-        marginTop: -4,
+    },
+    numberTextWrapper: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     textInfo: {
         gap: 2,
@@ -294,7 +330,8 @@ const styles = StyleSheet.create({
     },
     separator: {
         height: 1,
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#f0f0f0',
+        marginLeft: 50,
     },
     /* --- Added Styles --- */
     filterRow: {

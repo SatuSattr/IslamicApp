@@ -23,6 +23,7 @@ export default function RootLayout() {
 
   const [fontsLoaded] = useFonts({
     'NotoNaskhArabic': require('@/assets/tarteel/font/NotoNaskhArabic-VariableFont_wght.ttf'),
+    'SacredRamadhan': require('@/assets/tarteel/font/sacred-ramadhan.otf'),
   });
 
   useEffect(() => {
@@ -56,7 +57,15 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="hadith-detail" options={{ headerShown: false }} />
         <Stack.Screen name="asmaul-husna" options={{ headerShown: false }} />
+        <Stack.Screen name="doa-harian" options={{ headerShown: false }} />
+        <Stack.Screen name="doa-detail" options={{ headerShown: false }} />
+        <Stack.Screen name="dzikir" options={{ headerShown: false }} />
+        <Stack.Screen name="dzikir-detail" options={{ headerShown: false }} />
         <Stack.Screen name="pengaturan" options={{ headerShown: false }} />
+        <Stack.Screen name="arah-kiblat" options={{ headerShown: false }} />
+        <Stack.Screen name="lainnya" options={{ headerShown: false }} />
+        <Stack.Screen name="surah-detail" options={{ headerShown: false }} />
+        <Stack.Screen name="donasi" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
       <StatusBar style="auto" />

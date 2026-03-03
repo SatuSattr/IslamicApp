@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 import * as Location from 'expo-location';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // --- API TYPES ---
@@ -41,7 +41,7 @@ const PRAYER_MAPPING = [
 const MENU_ITEMS = [
   { icon: 'menu-book' as const, label: 'Al-Quran', iconColor: '#4a7a4d', circleBg: '#dff0df' },
   { icon: 'forum' as const, label: 'Doa Harian', iconColor: '#d4872e', circleBg: '#fdf0e0' },
-  { icon: 'favorite-border' as const, label: 'Dzikir Duha', iconColor: '#6F8F72', circleBg: '#e6f0e7' },
+  { icon: 'favorite-border' as const, label: 'Dzikir', iconColor: '#6F8F72', circleBg: '#e6f0e7' },
   { icon: 'settings' as const, label: 'Pengaturan', iconColor: '#8b7355', circleBg: '#f5efe6' },
   { icon: 'explore' as const, label: 'Arah Kiblat', iconColor: '#5a8a9e', circleBg: '#dff0f5' },
   { icon: 'volunteer-activism' as const, label: 'Donasi', iconColor: '#F2A65A', circleBg: '#fef4e8' },
@@ -178,24 +178,39 @@ export default function HomeScreen() {
 
   useEffect(() => {
     async function getLoc() {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        // Fallback to Bogor if denied
+      try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          // Fallback to Bogor if denied
+          setLocation({ lat: '-6.5971', lon: '106.8060', city: 'Bogor (Default)' });
+          return;
+        }
+
+        // 30 seconds timeout
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('timeout')), 30000)
+        );
+
+        const loc = await Promise.race([
+          Location.getCurrentPositionAsync({}),
+          timeoutPromise
+        ]) as Location.LocationObject;
+
+        let reverse = await Location.reverseGeocodeAsync({
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude,
+        });
+
+        setLocation({
+          lat: loc.coords.latitude.toString(),
+          lon: loc.coords.longitude.toString(),
+          city: reverse[0]?.city || reverse[0]?.subregion || 'Lokasi Saya',
+        });
+      } catch (err) {
+        console.warn('Gagal mendapatkan lokasi tepat waktu, beralih ke Bogor default.');
+        Alert.alert('Peringatan', 'Gagal mendapatkan lokasi tepat waktu. Beralih ke Bogor sebagai lokasi default.');
         setLocation({ lat: '-6.5971', lon: '106.8060', city: 'Bogor (Default)' });
-        return;
       }
-
-      let loc = await Location.getCurrentPositionAsync({});
-      let reverse = await Location.reverseGeocodeAsync({
-        latitude: loc.coords.latitude,
-        longitude: loc.coords.longitude,
-      });
-
-      setLocation({
-        lat: loc.coords.latitude.toString(),
-        lon: loc.coords.longitude.toString(),
-        city: reverse[0]?.city || reverse[0]?.subregion || 'Lokasi Saya',
-      });
     }
     getLoc();
   }, []);
@@ -307,9 +322,14 @@ export default function HomeScreen() {
             key={item.label}
             style={styles.menuItem}
             onPress={() => {
+              if (item.label === 'Al-Quran') router.push('/al-quran');
+              if (item.label === 'Doa Harian') router.push('/doa-harian');
+              if (item.label === 'Dzikir') router.push('/dzikir');
               if (item.label === 'Pengaturan') router.push('/pengaturan');
+              if (item.label === 'Arah Kiblat') router.push('/arah-kiblat');
+              if (item.label === 'Donasi') router.push('/donasi');
               if (item.label === 'Asmaul Husna') router.push('/asmaul-husna');
-              // More routes can be added here
+              if (item.label === 'Lainnya') router.push('/lainnya');
             }}
           >
             <View style={[styles.menuIconCircle, { backgroundColor: item.circleBg }]}>
@@ -424,10 +444,8 @@ const styles = StyleSheet.create({
   },
   clockText: {
     color: '#fff',
-    fontSize: 64,
-    fontWeight: '200',
-    letterSpacing: 2,
-    fontVariant: ['tabular-nums'],
+    fontSize: 84,
+    fontFamily: 'SacredRamadhan',
   },
   nextPrayerText: {
     color: 'rgba(255,255,255,0.85)',
