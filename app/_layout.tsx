@@ -1,19 +1,23 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
-import 'react-native-reanimated';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
+import "react-native-reanimated";
 
-import { CustomSplashScreen } from '@/components/custom-splash-screen';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { CustomSplashScreen } from "@/components/custom-splash-screen";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+  anchor: "(tabs)",
 };
 
 export default function RootLayout() {
@@ -22,8 +26,8 @@ export default function RootLayout() {
   const [splashAnimationFinished, setSplashAnimationFinished] = useState(false);
 
   const [fontsLoaded] = useFonts({
-    'NotoNaskhArabic': require('@/assets/tarteel/font/NotoNaskhArabic-VariableFont_wght.ttf'),
-    'SacredRamadhan': require('@/assets/tarteel/font/sacred-ramadhan.otf'),
+    NotoNaskhArabic: require("@/assets/tarteel/font/NotoNaskhArabic-VariableFont_wght.ttf"),
+    SacredRamadhan: require("@/assets/tarteel/font/sacred-ramadhan.otf"),
   });
 
   useEffect(() => {
@@ -52,8 +56,8 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="hadith-detail" options={{ headerShown: false }} />
         <Stack.Screen name="asmaul-husna" options={{ headerShown: false }} />
@@ -66,7 +70,10 @@ export default function RootLayout() {
         <Stack.Screen name="lainnya" options={{ headerShown: false }} />
         <Stack.Screen name="surah-detail" options={{ headerShown: false }} />
         <Stack.Screen name="donasi" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+        <Stack.Screen
+          name="modal"
+          options={{ presentation: "modal", title: "Modal", headerShown: true }}
+        />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

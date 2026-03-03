@@ -1,50 +1,67 @@
-# Welcome to your Expo app 👋
+# IslamicApp 🌙
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A comprehensive and modern Islamic companion app built with React Native and Expo. This app provides various features to help Muslims in their daily worship and spiritual journey.
 
-## Get started
+## 📱 Screenshots
 
-1. Install dependencies
+|                                               |                                               |                                               |
+| :-------------------------------------------: | :-------------------------------------------: | :-------------------------------------------: |
+| ![Screen 1](./assets/screenshots/screen1.png) | ![Screen 2](./assets/screenshots/screen2.png) | ![Screen 3](./assets/screenshots/screen3.png) |
+| ![Screen 4](./assets/screenshots/screen4.png) | ![Screen 5](./assets/screenshots/screen5.png) | ![Screen 6](./assets/screenshots/screen6.png) |
+| ![Screen 7](./assets/screenshots/screen7.png) | ![Screen 8](./assets/screenshots/screen8.png) | ![Screen 9](./assets/screenshots/screen9.png) |
+
+---
+
+## ✨ Features
+
+- **📖 Al-Qur'an**: Read Surahs with detailed translations and tafsir.
+- **🙏 Doa Harian**: Daily prayers and supplications for various occasions.
+- **📿 Dzikir**: Digital Tasbeeh and dzikir collections.
+- **🕋 Arah Kiblat**: Find the Qibla direction from your location.
+- **✨ Asmaul Husna**: The 99 names of Allah with their meanings.
+- **🤖 Islamic AI Assistant**: Ask questions and get guidance on Islamic topics.
+- **📰 Articles**: Informative Islamic articles and insights.
+
+## 🛠️ Tech Stack
+
+- **Framework**: [React Native](https://reactnative.dev/) with [Expo](https://expo.dev/) (SDK 54)
+- **Navigation**: [Expo Router](https://docs.expo.dev/router/introduction/) (File-based Routing)
+- **Styling**: Vanilla CSS / React Native Stylesheet
+- **Icons**: [@expo/vector-icons](https://docs.expo.dev/guides/icons/)
+- **Animations**: [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/) & [Lottie](https://docs.expo.dev/guides/lottie/)
+- **State Management**: React Context API
+- **Maps & Location**: [Expo Location](https://docs.expo.dev/versions/latest/sdk/location/)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (Latest LTS)
+- Expo Go app on your phone or an emulator
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/satusattr/IslamicApp.git
+   ```
+
+2. Install dependencies:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Start the development server:
 
    ```bash
-   npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
+4. Scan the QR code with Expo Go (Android) or Camera app (iOS) to run the app.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+> 🕒 **Waktu Pengerjaan:** 34 Jam  
+> 🏆 **Nilai** : N/A
