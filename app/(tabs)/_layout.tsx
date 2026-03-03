@@ -11,8 +11,13 @@ import { ScrollProvider, useScrollDirection } from '@/contexts/scroll-context';
 
 function FloatingTabBar(props: any) {
   const insets = useSafeAreaInsets();
-  const { isScrollingDown } = useScrollDirection();
+  const { isScrollingDown, resetScroll } = useScrollDirection();
   const translateY = useSharedValue(0);
+
+  // Reset scroll state when switching tabs
+  useEffect(() => {
+    resetScroll();
+  }, [props.state.index]);
 
   useEffect(() => {
     const currentRoute = props.state.routes[props.state.index].name;
@@ -162,12 +167,6 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.6)',
     boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
     ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.2,
-        shadowRadius: 20,
-      },
       android: {
         elevation: 18,
       },

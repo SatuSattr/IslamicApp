@@ -4,11 +4,13 @@ import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 type ScrollContextType = {
     isScrollingDown: boolean;
     handleScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    resetScroll: () => void;
 };
 
 const ScrollContext = createContext<ScrollContextType>({
     isScrollingDown: false,
     handleScroll: () => { },
+    resetScroll: () => { },
 });
 
 export function ScrollProvider({ children }: { children: React.ReactNode }) {
@@ -33,8 +35,13 @@ export function ScrollProvider({ children }: { children: React.ReactNode }) {
         lastOffsetY.current = currentY;
     };
 
+    const resetScroll = () => {
+        setIsScrollingDown(false);
+        lastOffsetY.current = 0;
+    };
+
     return (
-        <ScrollContext.Provider value={{ isScrollingDown, handleScroll }}>
+        <ScrollContext.Provider value={{ isScrollingDown, handleScroll, resetScroll }}>
             {children}
         </ScrollContext.Provider>
     );
